@@ -1,0 +1,141 @@
+<div class="container">
+	<h2>Commandes du compte <?= htmlspecialchars($customer['email'])?> (client n°<?= htmlspecialchars($customer['id']) ?>)</h2>
+
+	<?php if(!empty($customer['orders'])) : ?>
+	<?php $grandTotal = 0; ?>
+		<div id="customer-orders">
+				<ul class="order-details">
+				<?php foreach ($customer['orders'] as $order) : ?>
+			
+					<li><a href="orderlines/manageForm?id=<?= $order['orderId'] ?>" class="link">Commande n° <?= htmlspecialchars($order['orderId']) ?> passée le <?= htmlspecialchars($order['purchaseDate']) ?></a>
+						<ul class="orderlines">
+						<?php foreach ($order['orderLines'] as $product) : ?>
+							<li><?= $product['nameProduct']?> : 
+								<?= $product['quantity']?> x 
+								<?php $TTCPrice = htmlspecialchars($product['TTCPrice']);
+																echo number_format($TTCPrice, 2, ',','&nbsp;').'&nbsp;€';?> = 
+								<?php $subTotal = htmlspecialchars($product['subTotal']);
+								echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';?>
+							</li>
+						<?php endforeach ?>
+						<li>Montant total : <?php $total = htmlspecialchars($order['totalAmount']);
+										$grandTotal += $total;
+										echo number_format($total, 2, ',','&nbsp;').'&nbsp;€';?></li>
+										<div class="order-links">
+										<a href="orderlines/manageForm?id=<?= $order['orderId'] ?>">Modifier&nbsp;cette&nbsp;commande</a>
+										<a href="orders/removeOne?id=<?= $order['orderId'] ?>&CSRFToken=<?= $CSRFToken ?>">Supprimer&nbsp;cette&nbsp;commande</a>
+										</div>
+						</ul>
+					</li>
+				<?php endforeach ?>
+					<li>
+						Total des commandes : <?php $grandTotal = htmlspecialchars($grandTotal);
+										echo number_format($grandTotal, 2, ',','&nbsp;').'&nbsp;€';?>
+					</li>
+				</ul>
+		</div>
+	<?php endif ?>
+
+
+	<?php if($pagination['ordersNumber'] > 0) : ?>
+
+		<div id="orders">
+			<?php foreach($pagination['orders'] as $order): ?>
+			<div class="order">
+				<h2>Commande n°<?= htmlspecialchars($order['orderId']) ?> du <?= htmlspecialchars($order['purchaseDate']) ?></h2>
+				<div class="flex">	
+					<div id="billing-details">
+						<h3>Coordonnées de facturation</h3>
+						<p><?= htmlspecialchars($order['billingCivility']) ?> <?= htmlspecialchars($order['billingFirstName']) ?> <?= $order['billingLastName'] ?></p>
+						<p><?= htmlspecialchars($order['billingAddress']) ?></p>
+						<p><?= htmlspecialchars($order['billingZipCode']) ?> <?= htmlspecialchars($order['billingCity']) ?></p>
+						<p><?= htmlspecialchars($order['billingCountry']) ?></p>
+						<p><?= htmlspecialchars($order['billingPhoneNumber']) ?></p>
+					</div>
+
+					<div id="delivery-details">
+						<h3>Coordonnées de livraison</h3>
+						<p><?= htmlspecialchars($order['deliveryCivility']) ?> <?= htmlspecialchars($order['deliveryFirstName']) ?> <?= htmlspecialchars($order['deliveryLastName']) ?></p>
+						<p><?= htmlspecialchars($order['deliveryAddress']) ?></p>
+						<p><?= htmlspecialchars($order['deliveryZipCode']) ?> <?= htmlspecialchars($order['deliveryCity']) ?></p>
+						<p><?= htmlspecialchars($order['deliveryCountry']) ?></p>
+						<p><?= htmlspecialchars($order['deliveryPhoneNumber']) ?></p>
+					</div>
+				</div>
+
+				<table id="shoppingCart">
+					<thead>
+						<tr>
+						<th>Désignation</th>
+						<th>Prix unitaire TTC</th>
+						<th>Quantité</th>
+						<th>Sous-total</th>
+						</tr>
+					</thead>
+					<?php foreach($order['orderLines'] as $product): ?>
+						<tr>
+							<td class="product-cell">
+								<a href="products/showOne?id=<?= htmlspecialchars($product['idProduct']) ?>">
+									<?= htmlspecialchars($product['nameProduct']) ?>
+								</a>
+							</td>
+							<td>
+								<?php $TTCprice = htmlspecialchars($product['TTCPrice']);
+							echo number_format($TTCprice, 2, ',','&nbsp;').'&nbsp;€ '; ?><span class="mobile">l'unité</span>
+							</td>
+							<td><span class="mobile">Quantité :</span>
+								<?= htmlspecialchars($product['quantity']) ?>
+							</td>
+							<td class="subtotal last-cell"><span class="mobile">Sous-total :</span>
+								<?php $subTotal = htmlspecialchars($product['TTCPrice']*$product['quantity']);
+								echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';
+								?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					<tfoot>
+						<tr>
+							<th colspan='3'>Total</th>
+							<th><?= number_format($order['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></th>
+						</tr>
+						<tr>
+							<td class="mobile total" colspan='3'>Total</td>
+							<td class="mobile total"><?= number_format($order['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></td>
+						</tr>
+					</tfoot>
+				</table>
+				<a href="orderlines/manageForm?id=<?= $order['orderId'] ?>"><button class="green-button">Modifier cette commande</button></a>
+				<a href="orders/removeOne?id=<?= $order['orderId'] ?>&CSRFToken=<?= $CSRFToken ?>"><button class="green-button">Supprimer cette commande</button></a>
+			</div>		
+			<?php endforeach; ?>
+			<?php if ($pagination['pagesNumber'] > 1) : ?>
+			<nav id="pagination">
+				<?php for ($i=1; $i <= $pagination['pagesNumber']; $i++) : ?>
+					<?php if ($i == $pagination['currentPage']) : ?>
+						<button class="button" disabled><?= $i ?></button>
+					<?php else : ?>
+						<a href="customers/showOne?page=<?= $i ?>&id=<?= $customer['id'] ?>&CSRFToken=<?= $CSRFToken ?>"><button class="button"><?= $i ?></button></a>
+					<?php endif; ?>
+				<?php endfor; ?>
+				<p>
+					<?php if ($pagination['paginationStartShowed'] == $pagination['paginationEnd']) : ?>
+					Commande <?= $pagination['paginationStartShowed'] ?>
+					<?php else : ?>
+					Commandes <?= $pagination['paginationStartShowed'] ?> à <?= $pagination['paginationEnd'] ?>
+					<?php endif; ?>
+					 sur <?= $pagination['ordersNumber'] ?></p>
+			</nav>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		
+		<?php if($pagination['ordersNumber'] == 0): ?>
+			<p class="singleline">Ce client n'a passé aucune commande.</p>
+		<?php endif; ?>
+
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="customers/manageForm">Retourner à la gestion des clients</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

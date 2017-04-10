@@ -1,0 +1,12 @@
+<div class="container" id="unsuscribe">
+	<h2>Supprimer mon compte</h2>
+	<p>Vous allez nous manquer !</p> 
+	<p>Si vous souhaitez vraiment supprimer le compte lié à l'adresse <strong><?= htmlspecialchars($customer['email']) ?></strong>, veuillez entrer votre mot de passe pour le confirmer.</p>
+	<form action="customers/deleteAccount" method="post" id="account">
+		<div id="unsuscribe">
+			<input type="password" placeholder = "Mot de passe" name="password" required>
+			<input type="hidden" name="CSRFToken" value="<?= $_SESSION['customer']['CSRFToken'] ?>">
+		</div>
+		<button type="submit">Supprimer mon compte</button>
+	</form>
+</div>

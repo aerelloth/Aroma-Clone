@@ -1,0 +1,29 @@
+<div class="container">
+<h2>Voici les produits correspondant à votre recherche <em><?= htmlspecialchars($_GET['search']); ?></em> :</h2>
+<ul id="products">
+	<?php if(count($products) > 0): ?>
+		<?php foreach($products as $product): ?>
+
+			<li>
+				<a href="products/showOne?id=<?= htmlspecialchars($product['productId']) ?>">
+					<h3><?= htmlspecialchars($product['productName']) ?></h3>
+					<img src="public/resources/images/products/<?= htmlspecialchars($product['imagePath']) ?>" alt="<?= htmlspecialchars($product['productName']) ?>">
+				</a>
+				<p><?= htmlspecialchars($product['description']) ?></p>
+				<span class="bold"><?php
+				$price = htmlspecialchars($product['priceTTC']);
+				$price = number_format($price, 2, ',','&nbsp;');
+				echo $price.' €'; ?></span>
+				<div id="liens">
+					<a href="products/showOne?id=<?= htmlspecialchars($product['productId']) ?>">Dites-m'en plus !</a>
+					<a href="shoppingCart/addProduct?id=<?= htmlspecialchars($product['productId']) ?>">Ajouter&nbsp;au&nbsp;panier</a>
+				</div>
+			</li>
+		<?php endforeach; ?>
+	<?php endif; ?>
+</ul>
+<?php if(count($products) == 0): ?>
+	<p class="singleline">Il n'y a aucun produit correspondant à votre recherche.</p>
+	<a href="<?= CLIENT_ROOT ?>" class="underline">Retourner à l'accueil</a>
+	<?php endif; ?>
+</div>

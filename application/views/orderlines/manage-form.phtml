@@ -1,0 +1,113 @@
+<div class="container">
+	<div class="orderlines-admin">
+		<h2>Commande n°<?= htmlspecialchars($order['orderId']) ?> du <?= htmlspecialchars($order['purchaseDate']) ?></h2>
+		<div class="flex">	
+			<div id="billing-details">
+				<h3>Coordonnées de facturation</h3>
+				<p><?= htmlspecialchars($order['billingCivility']) ?> <?= htmlspecialchars($order['billingFirstName']) ?> <?= htmlspecialchars($order['billingLastName']) ?></p>
+				<p><?= htmlspecialchars($order['billingAddress']) ?></p>
+				<p><?= htmlspecialchars($order['billingZipCode']) ?> <?= htmlspecialchars($order['billingCity']) ?></p>
+				<p><?= htmlspecialchars($order['billingCountry']) ?></p>
+				<p><?= htmlspecialchars($order['billingPhoneNumber']) ?></p>
+			</div>
+
+			<div id="delivery-details">
+				<h3>Coordonnées de livraison</h3>
+				<p><?= htmlspecialchars($order['deliveryCivility']) ?> <?= htmlspecialchars($order['deliveryFirstName']) ?> <?= $order['deliveryLastName'] ?></p>
+				<p><?= htmlspecialchars($order['deliveryAddress']) ?></p>
+				<p><?= htmlspecialchars($order['deliveryZipCode']) ?> <?= htmlspecialchars($order['deliveryCity']) ?></p>
+				<p><?= htmlspecialchars($order['deliveryCountry']) ?></p>
+				<p><?= htmlspecialchars($order['deliveryPhoneNumber']) ?></p>
+			</div>
+		</div>
+
+		<a href="customers/showOne?id=<?= $order['idCustomer'] ?>&CSRFToken=<?= $CSRFToken?>"><button class="green-button">Fiche client</button></a>
+
+		<table id="shoppingCart" class='admin-orderlines'>
+			<thead>
+				<tr>
+				<th>Désignation</th>
+				<th>Prix unitaire HT</th>
+				<th>Prix unitaire TTC</th>
+				<th>% TVA</th>
+				<th>Quantité</th>
+				<th>Sous-total TTC</th>
+				<th>Modifier</th>
+				<th>Supprimer</th>
+				</tr>
+			</thead>
+			<?php foreach($order['orderLines'] as $product): ?>
+				<tr>
+					<td class="product-cell">
+						<select name="idProduct" required>
+							<?php foreach ($allProducts as $oneProduct) : ?>
+							<option value="<?= htmlspecialchars($oneProduct['productId']); ?>" id="product<?= htmlspecialchars($oneProduct['productId']); ?>" <?= ($oneProduct['productId'] == $product['idProduct']) ? 'selected' : null ?>><?= htmlspecialchars($oneProduct['productName']); ?></option>
+							<?php endforeach ?>
+						</select>
+					</td>
+					<td contenteditable>
+						<?php $priceHTProduct = htmlspecialchars($product['priceHTProduct']);
+					echo number_format($priceHTProduct, 2, ',','&nbsp;').'&nbsp;€ '; ?><span class="mobile">HT l'unité</span>
+					</td>
+					<td>
+						<?php $TTCprice = htmlspecialchars($product['TTCPrice']);
+					echo number_format($TTCprice, 2, ',','&nbsp;').'&nbsp;€ '; ?><span class="mobile">TTC l'unité</span>
+					</td>
+					<td contenteditable><?= htmlspecialchars($product['VATRateProduct']) ?><span class="mobile"> % de TVA</span>
+					</td>
+					<td contenteditable><span class="mobile">x&nbsp;</span><?= htmlspecialchars($product['quantity']) ?>
+					</td>
+					<td class="subtotal"><span class="mobile">Sous-total TTC :</span>
+						<?php $subTotal = htmlspecialchars($product['TTCPrice']*$product['quantity']);
+						echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';
+						?>
+					</td>
+					<td class="ib">
+						<button data-action="update" data-id="<?= $product['orderLineId'] ?>" data-orderid="<?= $order['orderId'] ?>" data-csrftoken="<?= $CSRFToken?>" class="green-button">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button>
+					</td class="ib">
+					<td>
+						<a href="orderlines/removeOne?orderlineId=<?= $product['orderLineId'] ?>&CSRFToken=<?= $CSRFToken?>&id=<?= $order['orderId'] ?>">
+							<button class="green-button">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			<tfoot>
+				<tr>
+					<th colspan='5'>Total</th>
+					<th colspan='3'><?= number_format($order['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></th>
+				</tr>
+				<tr>
+					<td class="mobile total" colspan='3'>Total</td>
+					<td class="mobile total"><?= number_format($order['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></td>
+				</tr>
+			</tfoot>
+		</table>
+
+			<form id="admin-add-orderline" method="post" action="orderlines/adminAddOne">
+				<p>Ajouter un produit :</p>
+					<select name="newIdProduct" required>
+						<?php foreach ($allProducts as $oneProduct) : ?>
+						<option value="<?= htmlspecialchars($oneProduct['productId']); ?>" id="product<?= htmlspecialchars($oneProduct['productId']); ?>">
+							<?= htmlspecialchars($oneProduct['productName'].' - '.$oneProduct['priceHT'].'€ HT / '.$oneProduct['priceTTC'].'€ TTC') ?>
+						</option>
+						<?php endforeach ?>
+					</select>
+					<input type="number" step='1' placeholder="quantité" value='1' name='newQuantity' required>
+					<input type="hidden" name="idOrder" value ="<?= $order['orderId']?>"></input>
+					<input type="hidden" name="CSRFToken" value ="<?= $CSRFToken ?>"></input>
+					<button type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+				</form>
+			</tr>
+		</table>
+	</div>	
+	<div id="liens">
+		<a href="orders/manageForm">Retour aux commandes</a>
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

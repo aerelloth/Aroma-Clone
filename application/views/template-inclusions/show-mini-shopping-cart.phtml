@@ -1,0 +1,37 @@
+<div id="mini-cart">
+	<form action="shoppingCart/update" method="post">
+		<table id="mini-shoppingCart">
+			<?php foreach($shoppingCart['products'] as $product): ?>
+				<tr>
+					<th>
+						<a href="products/showOne?id=<?= htmlspecialchars($product['productId']) ?>">
+							<?= htmlspecialchars($product['productName']) ?>
+						</a>
+					</th>
+				</tr>
+				<tr>
+					<td>
+						<p>Quantité : <input type='number' min="0" value='<?= htmlspecialchars($product['quantity']) ?>' name='shoppingCart[products][<?= $product['productId'] ?>]'></input></p>
+						<p>Prix unitaire : <?php
+						$priceTTC = htmlspecialchars($product['priceTTC']);
+						echo number_format($priceTTC, 2, ',','&nbsp;').'&nbsp;€'; ?></p>
+						<p>
+							<span class="bold"><?php 
+							$subTotal = htmlspecialchars($product['subTotal']);
+							echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€'?></span>
+							<a href="shoppingCart/removeProduct?id=<?= $product['productId'] ?>"><button type='button' class='remove'>x</button></a></p>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			<tfoot>
+				<tr>
+					<th>Total : <?= number_format($shoppingCart['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></th>
+				</tr>
+			</tfoot>
+		</table>
+		<div id='minicart-boutons'>
+			<button type="submit">Actualiser</button>
+			<a href="<?=CLIENT_ROOT?>orders/billingForm"><button type='button'>Finaliser ma commande</button></a>
+		</div>
+	</form>
+</div>

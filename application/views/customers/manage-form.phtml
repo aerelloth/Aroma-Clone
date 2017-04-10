@@ -1,0 +1,119 @@
+<div class="container">
+	<h2>Gestion des clients</h2>
+	<div class="overflow">
+		<table id='admin' class='admin-customers'>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Email</th>
+					<th>Civilité</th>
+					<th>Prénom</th>
+					<th>Nom</th>
+					<th>Adresse</th>
+					<th>Code postal</th>
+					<th>Ville</th>
+					<th>Pays</th>
+					<th>Téléphone</th>
+					<th>Modifier</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($customers as $customer) : ?>
+				<tr>
+					<td><a href="customers/showOne?id=<?= $customer['id'] ?>&CSRFToken=<?= $CSRFToken ?>"><button class="green-button"><?= htmlspecialchars($customer['id']); ?></button></a></td>
+					<td contenteditable><?= htmlspecialchars($customer['email']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['civility']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['firstName']); ?></td>
+					<td contenteditable><span class="uppercase"><?= htmlspecialchars($customer['lastName']); ?></span></td>
+					<td contenteditable><?= htmlspecialchars($customer['address']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['zipCode']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['city']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['country']); ?></td>
+					<td contenteditable><?= htmlspecialchars($customer['phoneNumber']); ?></td>
+					</td>
+					<td><button data-action="update" data-id="<?= $customer['id'] ?>" data-csrftoken="<?=$CSRFToken?>" class="green-button"><?= '<i class="fa fa-pencil" aria-hidden="true"></i>'; ?></button></td>
+					<td><a href="customers/adminDeleteAccount?id=<?= $customer['id'] ?>&CSRFToken=<?= $CSRFToken ?>"><button class="green-button">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button></a>
+					</td>
+				</tr>
+
+				<!------------------------------------------------
+
+				Affichage déroulant des commandes des utilisateurs.
+
+				Désactivé pour améliorer les performances et affiché en individuel dans les fiches clients.
+				à décommenter ci-dessous et dans CustomersController/manageFormAction
+
+				-------------------------------------------------->
+
+				<!--<?php if(!empty($customer['orders'])) : ?>
+				<?php $grandTotal = 0; ?>
+					<tr>
+						<td colspan="12" class="order-row">Commandes du compte <?= htmlspecialchars($customer['email']); ?> :
+							<ul class="order-details">
+							<?php foreach ($customer['orders'] as $order) : ?>
+						
+								<li><a href="orders/showOne?id=<?= $order['orderId'] ?>" class="link">Commande n° <?= htmlspecialchars($order['orderId']) ?> passée le <?= htmlspecialchars($order['purchaseDate']) ?></a>
+									<ul class="orderlines">
+									<?php foreach ($order['orderLines'] as $product) : ?>
+										<li><?= $product['nameProduct']?> : 
+											<?= $product['quantity']?> x 
+											<?php $TTCPrice = htmlspecialchars($product['TTCPrice']);
+																			echo number_format($TTCPrice, 2, ',','&nbsp;').'&nbsp;€';?> = 
+											<?php $subTotal = htmlspecialchars($product['subTotal']);
+											echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';?>
+										</li>
+									<?php endforeach ?>
+									<li>Montant total : <?php $total = htmlspecialchars($order['totalAmount']);
+													$grandTotal += $total;
+													echo number_format($total, 2, ',','&nbsp;').'&nbsp;€';?></li>
+									</ul>
+								</li>
+							<?php endforeach ?>
+								<li>
+									Total des commandes : <?php $grandTotal = htmlspecialchars($grandTotal);
+													echo number_format($grandTotal, 2, ',','&nbsp;').'&nbsp;€';?>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				<?php endif ?> -->
+
+				<!-- Fin de l'affichage déroulant des commandes -->
+				
+				<?php endforeach ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan='12'>
+						<p>Ajouter un nouveau client :</p>
+						<form action="customers/adminAddOne" method="post" id="admin-add-customer">
+							<input type="email" name="email" placeholder="email" value="<?= (isset($enteredData['email']))? htmlspecialchars($enteredData['email']) : null?>" required></input>
+							<input type="password" name="password" placeholder="mot de passe" required></input>
+							<select name="civility" required>
+								<option value="M." id="M" <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'M.') ? 'selected' : null) ?>>M.</option>
+								<option value="Mme" <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mme') ? 'checked' : null) ?>>Mme</option>
+								<option value="Mlle" <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mlle') ? 'checked' : null) ?>>Mlle</option>
+							</select>
+							<input type="text" name="firstName" placeholder="prénom" value="<?= (isset($enteredData['firstName']))? htmlspecialchars($enteredData['firstName']) : null?>" required></input>
+							<input type="text" name="lastName" placeholder="nom" value="<?= (isset($enteredData['lastName']))? htmlspecialchars($enteredData['lastName']) : null?>" required></input>
+							<textarea name="address" placeholder="Adresse" required><?= (isset($enteredData['address']))? htmlspecialchars($enteredData['address']) : null?></textarea>
+							<input type="text" placeholder="Code postal" name="zipCode" value="<?= (isset($enteredData['zipCode']))? htmlspecialchars($enteredData['zipCode']) : null?>" required>
+							<input type="text" placeholder="Commune" name="city" value="<?= (isset($enteredData['city']))? htmlspecialchars($enteredData['city']) : null?>" required>
+							<input type="text" placeholder="Pays" name="country" value="<?= (isset($enteredData['country']))? htmlspecialchars($enteredData['country']) : null?>" required>
+							<input type="text" placeholder="Numéro de téléphone" name="phoneNumber" value="<?= (isset($enteredData['phoneNumber']))? htmlspecialchars($enteredData['phoneNumber']) : null?>">
+							<input type="hidden" name="CSRFToken" value ="<?=$CSRFToken?>"></input>
+							<button type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+						</form>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

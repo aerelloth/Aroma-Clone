@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Aroma-Clone</title>
+		<base href="<?= CLIENT_ROOT ?>">
+		<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" /> 
+		<link rel="stylesheet" href="<?= CLIENT_ROOT.'public\resources\css\styles.css' ?>">
+		<link rel="shortcut icon" type="image/x-icon" href="<?= CLIENT_ROOT?>public\resources\images\leaves.png" />
+	</head>
+	<body>
+		<header>
+			<a href="<?= CLIENT_ROOT ?>"><h1>Aroma-Clone</h1></a>
+			<!--<h2>Prenez la vie côté nature !</h2>-->
+			<nav id="menu">
+				<a href="<?= CLIENT_ROOT ?>">Accueil</a>
+				<div id="categories-panel">
+					<a href="categories/showAll">Catégories</a>
+					<nav>
+						<?php (new TemplateController()) -> showCategories(); ?>
+					</nav>
+				</div>
+				<form action="<?= CLIENT_ROOT ?>products/showSearchResult" method="get">
+					<label for="search">Rechercher :</label>
+					<input type="text" name="search" id="search">
+					<button type ="submit">Go !</button>
+				</form>
+				<div id="customer">
+					<a href="customers/account">Espace&nbsp;client</a>
+					<?php (new TemplateController()) -> showLoginStatus(); ?>
+				</div>
+				<div id="cart-panel">
+					<a href="shoppingCart/show">Mon&nbsp;panier</a>
+					<?php (new TemplateController()) -> showMiniShoppingCart(); ?>
+				</div>
+			</nav>
+		</header>
+
+		
+		<main>
+			<!-- Alert messages -->
+					<?php if(isset($alertMessages)): ?>
+						<?php foreach($alertMessages as $messagesType => $alertMessagesType): ?>
+							<?php foreach($alertMessagesType as $alertMessage): ?>
+								<p class="alert-message <?= htmlspecialchars($messagesType) ?>"><?= $alertMessage ?></p>
+							<?php endforeach; ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
+
+			<!-- CONTENT -->	
+
+				<?=$viewContent?></main>
+
+			<!-- END CONTENT -->
+
+		<footer>Création : Océane Scheidel, 2016 - <small>produits présentés provenant de chez Aroma-Zone</small></footer>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<!-- <script src="jquery-3.1.1.min.js"></script> -->
+		<script src="<?= CLIENT_ROOT ?>public/resources/javascript/script.js"></script>
+	</body>
+</html>

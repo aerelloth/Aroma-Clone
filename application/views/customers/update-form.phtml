@@ -1,0 +1,26 @@
+<div class="container">
+	<h2>Modifier mes coordonnées : </h2>
+	<form action="customers/update" method="post" id="account">
+		<div id="billing-data">
+			<div class="radio">
+				<input type="radio" name="civility" value="M." id="M" <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'M.') ? 'checked' : null) ?> required/> <label for="M">M.</label>
+				<input type="radio" name="civility" value="Mme" id="Mme"<?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mme') ? 'checked' : null) ?> required/> <label for="Mme">Mme</label>
+				<input type="radio" name="civility" value="Mlle" id="Mlle"<?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mlle') ? 'checked' : null) ?> required/> <label for="Mlle">Mlle</label>
+			</div>
+			<input type="text" placeholder="Prénom" name="firstName" value="<?= (isset($enteredData['firstName']))? htmlspecialchars($enteredData['firstName']) : null?>" required>
+			<input type="text" placeholder="Nom" name="lastName" value="<?= (isset($enteredData['lastName']))? htmlspecialchars($enteredData['lastName']) : null?>" required>
+			<textarea name="address" cols="30" rows="10" placeholder="Adresse"  required><?= (isset($enteredData['address']))? htmlspecialchars($enteredData['address']) : null?></textarea>
+			<input type="text" placeholder="Code postal" name="zipCode" value="<?= (isset($enteredData['zipCode']))? htmlspecialchars($enteredData['zipCode']) : null?>" required>
+			<input type="text" placeholder="Commune" name="city" value="<?= (isset($enteredData['city']))? htmlspecialchars($enteredData['city']) : null?>" required>
+			<input type="text" placeholder="Pays" name="country" value="<?= (isset($enteredData['country']))? htmlspecialchars($enteredData['country']) : null?>" required>
+			<input type="text" placeholder="Numéro de téléphone" name="phoneNumber" value="<?= (isset($enteredData['phoneNumber']))? htmlspecialchars($enteredData['phoneNumber']) : null?>" >
+			<input type="email" placeholder="E-mail" name="email" value="<?= (isset($enteredData['email']))? htmlspecialchars($enteredData['email']) : null?>"required>
+			<p>Entrez votre mot de passe pour confirmer.</p>
+			<input type="password" placeholder = "Mot de passe" name="password" required>
+			<input type="hidden" name="CSRFToken" value="<?= $_SESSION['customer']['CSRFToken'] ?>">
+		</div>
+			<button type="submit" class="green-button">Mettre à jour</button>
+			<a href="customers/passwordUpdateForm"><button type="button" class="green-button">Modifier mon mot de passe</button></a>
+	</form>
+
+</div>

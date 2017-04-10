@@ -1,0 +1,130 @@
+<div class="container">
+	<h2>Gestion des commandes</h2>
+	<div class="overflow">
+		<table id='admin' class='admin-orders'>
+			<thead>
+				<tr class="border">
+					<th rowspan='2'>Id</th>
+					<th rowspan='2'>Date d'achat</th>
+					<th colspan='8' class="colspan">Facturation</th>
+					<th colspan='8' class="colspan">Livraison</th>
+					<th rowspan='2'>Id client</th>
+					<th rowspan='2'>Modifier</th>
+					<th rowspan='2'>Supprimer</th>
+					<th rowspan='2'>Fiche client</th>
+				</tr>
+				<tr class="border">
+					<th>Civilité</th>
+					<th>Prénom</th>
+					<th>Nom</th>
+					<th>Adresse</th>
+					<th>Code postal</th>
+					<th>Ville</th>
+					<th>Pays</th>
+					<th>Téléphone</th>
+					<th>Civilité</th>
+					<th>Prénom</th>
+					<th>Nom</th>
+					<th>Adresse</th>
+					<th>Code postal</th>
+					<th>Ville</th>
+					<th>Pays</th>
+					<th>Téléphone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($orders as $order) : ?>
+				<tr>
+					<td><a href="orderlines/manageForm?id=<?= $order['orderId']?>"><button class="green-button"><?= htmlspecialchars($order['orderId']); ?></button></a></td>
+					<td contenteditable><?= htmlspecialchars($order['purchaseDate']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingCivility']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingFirstName']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingLastName']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingAddress']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingZipCode']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingCity']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingCountry']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['billingPhoneNumber']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryCivility']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryFirstName']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryLastName']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryAddress']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryZipCode']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryCity']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryCountry']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['deliveryPhoneNumber']); ?></td>
+					<td contenteditable><?= htmlspecialchars($order['idCustomer']); ?></td>
+					<td><button data-action="update" data-id="<?= $order['orderId'] ?>" data-csrftoken="<?= $CSRFToken?>" class="green-button"><?= '<i class="fa fa-pencil" aria-hidden="true"></i>'; ?></button></td>
+					<td><a href="orders/removeOne?id=<?= $order['orderId'] ?>&CSRFToken=<?= $CSRFToken?>"><button class="green-button">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button></a>
+					</td>
+					<td><a href="customers/showOne?id=<?= $order['idCustomer'] ?>&CSRFToken=<?= $CSRFToken?>"><button class="green-button">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</button></a>
+					</td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan='21'>
+						<p class="bold">Ajouter une nouvelle commande :</p>
+						<form action="orders/addOne" method="post" id="admin-add-order" class="flex">
+							<div id="order-1">
+								<p>Date et heure :</p>
+								le 
+								<input type="number" name="purchaseDay" min="1" max="31" placeholder="jour" value="<?= (isset($enteredData['purchaseDay']))? htmlspecialchars($enteredData['purchaseDay']) : null?>" class="number"></input> / 
+								<input type="number" name="purchaseMonth" min="1" max="12" placeholder="mois" value="<?= (isset($enteredData['purchaseMonth']))? htmlspecialchars($enteredData['purchaseMonth']) : null?>" class="number"></input> / 
+								<input type="number" name="purchaseYear" min="2000" max="2050" placeholder="année" value="<?= (isset($enteredData['purchaseYear']))? htmlspecialchars($enteredData['purchaseYear']) : null?>" class="number"></input>
+								 à 
+								<input type="number" name="purchaseHour"  min="0" max="23" value="<?= (isset($enteredData['purchaseHour']))? htmlspecialchars($enteredData['purchaseHour']) : 0?>" class="number"></input> h 
+								<input type="number" name="purchaseMinute" min="0" max="59" value="<?= (isset($enteredData['purchaseMinute']))? htmlspecialchars($enteredData['purchaseMinute']) : 0?>" class="number"></input> min
+							</div>
+							<!-- Billing data -->
+							<div id="order-2">
+								<p>Coordonnées de facturation :</p>
+								<select name="billingCivility" required>
+									<option value="M." id="M" <?= ((isset($enteredData['billingCivility']) AND $enteredData['billingCivility'] == 'M.') ? 'selected' : null) ?>>M.</option>
+									<option value="Mme" <?= ((isset($enteredData['billingCivility']) AND $enteredData['billingCivility'] == 'Mme') ? 'checked' : null) ?>>Mme</option>
+									<option value="Mlle" <?= ((isset($enteredData['billingCivility']) AND $enteredData['billingCivility'] == 'Mlle') ? 'checked' : null) ?>>Mlle</option>
+								</select>
+								<input type="text" name="billingFirstName" placeholder="Prénom" value="<?= (isset($enteredData['billingFirstName']))? htmlspecialchars($enteredData['billingFirstName']) : null?>" required></input>
+								<input type="text" name="billingLastName" placeholder="Nom" value="<?= (isset($enteredData['billingLastName']))? htmlspecialchars($enteredData['billingLastName']) : null?>" required></input>
+								<textarea name="billingAddress" placeholder="Adresse" required><?= (isset($enteredData['billingAddress']))? htmlspecialchars($enteredData['billingAddress']) : null?></textarea>
+								<input type="text" placeholder="Code postal" name="billingZipCode" value="<?= (isset($enteredData['billingZipCode']))? htmlspecialchars($enteredData['billingZipCode']) : null?>" required>
+								<input type="text" placeholder="Commune" name="billingCity" value="<?= (isset($enteredData['billingCity']))? htmlspecialchars($enteredData['billingCity']) : null?>" required>
+								<input type="text" placeholder="Pays" name="billingCountry" value="<?= (isset($enteredData['billingCountry']))? htmlspecialchars($enteredData['billingCountry']) : null?>" required>
+								<input type="text" placeholder="Numéro de téléphone" name="billingPhoneNumber" value="<?= (isset($enteredData['billingPhoneNumber']))? htmlspecialchars($enteredData['billingPhoneNumber']) : null?>">
+							</div>
+
+							<!-- Billing data -->
+							<div id="order-3">
+								<p>Coordonnées de livraison :</p>
+								<select name="deliveryCivility" required>
+									<option value="M." id="M" <?= ((isset($enteredData['deliveryCivility']) AND $enteredData['deliveryCivility'] == 'M.') ? 'selected' : null) ?>>M.</option>
+									<option value="Mme" <?= ((isset($enteredData['deliveryCivility']) AND $enteredData['deliveryCivility'] == 'Mme') ? 'checked' : null) ?>>Mme</option>
+									<option value="Mlle" <?= ((isset($enteredData['deliveryCivility']) AND $enteredData['deliveryCivility'] == 'Mlle') ? 'checked' : null) ?>>Mlle</option>
+								</select>
+								<input type="text" name="deliveryFirstName" placeholder="Prénom" value="<?= (isset($enteredData['deliveryFirstName']))? htmlspecialchars($enteredData['deliveryFirstName']) : null?>" required></input>
+								<input type="text" name="deliveryLastName" placeholder="Nom" value="<?= (isset($enteredData['deliveryLastName']))? htmlspecialchars($enteredData['deliveryLastName']) : null?>" required></input>
+								<textarea name="deliveryAddress" placeholder="Adresse" required><?= (isset($enteredData['deliveryAddress']))? htmlspecialchars($enteredData['deliveryAddress']) : null?></textarea>
+								<input type="text" placeholder="Code postal" name="deliveryZipCode" value="<?= (isset($enteredData['deliveryZipCode']))? htmlspecialchars($enteredData['deliveryZipCode']) : null?>" required>
+								<input type="text" placeholder="Commune" name="deliveryCity" value="<?= (isset($enteredData['deliveryCity']))? htmlspecialchars($enteredData['deliveryCity']) : null?>" required>
+								<input type="text" placeholder="Pays" name="deliveryCountry" value="<?= (isset($enteredData['deliveryCountry']))? htmlspecialchars($enteredData['deliveryCountry']) : null?>" required>
+								<input type="text" placeholder="Numéro de téléphone" name="deliveryPhoneNumber" value="<?= (isset($enteredData['deliveryPhoneNumber']))? htmlspecialchars($enteredData['deliveryPhoneNumber']) : null?>">
+								<input type="number" placeholder="Id Client" name="idCustomer" value="<?= (isset($enteredData['idCustomer']))? htmlspecialchars($enteredData['idCustomer']) : null?>">
+								<input type="hidden" name="CSRFToken" value ="<?= $CSRFToken ?>"></input>
+								<button type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+							</div>
+						</form>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

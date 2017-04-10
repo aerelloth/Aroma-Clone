@@ -1,0 +1,7 @@
+<div id="menu-categories">
+	<?php foreach($categories as $category): ?>
+		<a href="products/showByCategory?id=<?= htmlspecialchars($category['categoryId']) ?>">
+			<?= htmlspecialchars($category['categoryName']) ?>&nbsp;(<?= htmlspecialchars($category['productsNumber']) ?>)
+		</a>
+	<?php endforeach; ?>
+</div>

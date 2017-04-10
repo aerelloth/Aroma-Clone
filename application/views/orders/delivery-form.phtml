@@ -1,0 +1,20 @@
+<div class="container">
+	<h2>Coordonnées de livraison : </h2>
+	<form action="orders/saveDeliveryDetails" method="post" id="account">
+		<div id="delivery-data">
+			<div class="radio">
+				<input type="radio" name="civility" value="M." id="M" required <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'M.') ? 'checked' : (isset($billing['civility']) AND $billing['civility'] == 'M.')? 'checked' : null) ?> /> <label for="M">M.</label>
+				<input type="radio" name="civility" value="Mme" id="Mme" required <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mme') ? 'checked' : (isset($billing['civility']) AND $billing['civility'] == 'Mme')? 'checked' : null) ?>/> <label for="Mme">Mme</label>
+				<input type="radio" name="civility" value="Mlle" id="Mlle" required <?= ((isset($enteredData['civility']) AND $enteredData['civility'] == 'Mlle') ? 'checked' : (isset($billing['civility']) AND $billing['civility'] == 'Mlle')? 'checked' : null) ?>/> <label for="Mlle">Mlle</label>
+			</div>
+			<input type="text" placeholder="Prénom" name="firstName" value="<?= (isset($enteredData['firstName']))? htmlspecialchars($enteredData['firstName']) : htmlspecialchars($billing['firstName'])?>" required>
+			<input type="text" placeholder="Nom" name="lastName" value="<?= (isset($enteredData['firstName']))? htmlspecialchars($enteredData['lastName']) : htmlspecialchars($billing['lastName'])?>" required>
+			<textarea name="address" cols="30" rows="10" placeholder="Adresse" required><?= (isset($enteredData['addressName']))? htmlspecialchars($enteredData['address']) : htmlspecialchars($billing['address'])?></textarea>
+			<input type="text" placeholder="Code postal" name="zipCode" value="<?= (isset($enteredData['zipCode']))? htmlspecialchars($enteredData['zipCode']) : htmlspecialchars($billing['zipCode'])?>" required>
+			<input type="text" placeholder="Commune" name="city" value="<?= (isset($enteredData['city']))? htmlspecialchars($enteredData['city']) : htmlspecialchars($billing['city'])?>" required>
+			<input type="text" placeholder="Pays" name="country" value="<?= (isset($enteredData['country']))? htmlspecialchars($enteredData['country']) : htmlspecialchars($billing['country'])?>" required>
+			<input type="text" placeholder="Numéro de téléphone" name="phoneNumber" value="<?= (isset($enteredData['phoneNumber']))? htmlspecialchars($enteredData['phoneNumber']) : htmlspecialchars($billing['phoneNumber'])?>" required>
+		</div>
+		<button type="submit">Valider</button>
+	</form>
+</div>

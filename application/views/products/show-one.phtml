@@ -1,0 +1,14 @@
+<div class="container">
+	<div id="product">
+		<h3><?= htmlspecialchars($product['productName']) ?></h3>
+		<img src="public/resources/images/products/<?= htmlspecialchars($product['imagePath']) ?>" alt="<?= htmlspecialchars($product['productName']) ?>">
+		<p><?= htmlspecialchars($product['description']) ?></p>
+		<span class="bold"><?php
+		$price = htmlspecialchars($product['priceTTC']);
+		$price = number_format($price, 2, ',','&nbsp;');
+		echo $price.' €'; ?></span>
+		<div id="liens">
+			<a href="shoppingCart/addProduct?id=<?= htmlspecialchars($product['productId']) ?>">Ajouter&nbsp;au&nbsp;panier</a>
+		</div>
+	</div>
+</div>

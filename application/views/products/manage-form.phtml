@@ -1,0 +1,80 @@
+<div class="container">
+	<h2>Gestion des produits</h2>
+	<div class="overflow">
+		<table id='admin' class='admin-products'>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Description</th>
+					<th>Chemin image</th>
+					<th>Prix HT</th>
+					<th>TVA</th>
+					<th>Prix TTC</th>
+					<th>Catégorie</th>
+					<th>Modifier</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($products as $product) : ?>
+				<tr>
+					<td><a href="products/adminShowOne?id=<?= $product['productId'] ?>"><button class="green-button"><?= htmlspecialchars($product['productId']); ?></button></a></td>
+					<td contenteditable><?= htmlspecialchars($product['productName']); ?></td>
+					<td contenteditable><?= htmlspecialchars($product['description']); ?></td>
+					<td contenteditable><?= htmlspecialchars($product['imagePath']); ?></td>
+					<td contenteditable><?= htmlspecialchars($product['priceHT']); ?></td>
+					<td contenteditable><?= htmlspecialchars($product['VATRate']); ?></td>
+					<td><?= htmlspecialchars($product['priceTTC']); ?></td>
+					<td><!--<?= htmlspecialchars($product['categoryName']); ?>-->
+						<select name="idCategory" required>
+							<?php foreach ($categories as $category) : ?>
+
+							<option value="<?= htmlspecialchars($category['categoryId']); ?>" id="category<?= htmlspecialchars($category['categoryId']); ?>" <?= ($product['categoryId'] == $category['categoryId']) ? 'selected' : null ?>><?= htmlspecialchars($category['categoryName']); ?></option>
+							<?php endforeach ?>
+						</select>
+					<td>
+						<button data-action="update" data-id="<?= $product['productId'] ?>" data-csrftoken="<?= $CSRFToken?>" class="green-button">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button>
+					</td>
+					<td>
+						<a href="products/removeOne?id=<?= $product['productId'] ?>&CSRFToken=<?= $CSRFToken?>">
+							<button class="green-button">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</a>
+					</td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan='10'>
+						<p>Ajouter un nouveau produit :</p>
+						<form action="products/addOne" method="post" id="admin-add-product">
+							<input type="text" name="productName" placeholder="nom du produit" value="<?= (isset($enteredData['name']))? htmlspecialchars($enteredData['name']) : null?>" maxlength="75"></input>
+							<textarea name="description" id="description" placeholder="description"><?= (isset($enteredData['description']))? htmlspecialchars($enteredData['description']) : null?></textarea>
+							<input type="text" name="imagePath" placeholder="chemin image" value="<?= (isset($enteredData['imagePath']))? htmlspecialchars($enteredData['imagePath']) : null?>" maxlength="100"></input>
+							<input type="number" name="priceHT" placeholder="prix HT" min='0' step="0.01" value="<?= (isset($enteredData['priceHT']))? htmlspecialchars($enteredData['priceHT']) : null?>"></input>
+							<input type="number" name="VATRate" placeholder="taux TVA" min='0' step="0.01" value="<?= (isset($enteredData['VATRate']))? htmlspecialchars($enteredData['VATRate']) : null?>"></input>
+							<select name="idCategory" required>
+								<?php foreach ($categories as $category) : ?>
+
+								<option value="<?= htmlspecialchars($category['categoryId']); ?>" id="category<?= htmlspecialchars($category['categoryId']); ?>" <?= ((isset($enteredData['categoryId']) AND $enteredData['categoryId'] == $category['categoryId']) ? 'selected' : null) ?>><?= htmlspecialchars($category['categoryName']); ?></option>
+								<?php endforeach ?>
+							</select>
+							<input type="hidden" name="CSRFToken" value ="<?= $CSRFToken?>"></input>
+							<button type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+						</form>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<a href="products/adminStats"><button class="green-button"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistiques produits</button></a>
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

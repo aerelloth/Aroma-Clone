@@ -1,0 +1,14 @@
+<div id='login-panel'>
+	<?php if(empty($customer)) : ?>
+	<form action="customers/login" method="post">
+		<input name="email" id="email" placeholder="Email" required type="email" value="<?= (isset($enteredData['email']))? htmlspecialchars($enteredData['email']) : null?>">
+		<input name="password" id="password" placeholder="Mot de passe" required type="password">
+		<button type="submit">Me connecter</button>
+	</form>
+	<hr>
+	<a href="customers/createAccount"><button type="button">Créer un compte</button></a>
+	<?php else : ?>
+	<?= $customer['email'] ?>
+	<a href="customers/logout"><button>Me déconnecter</button></a>
+	<?php endif; ?>
+</div>

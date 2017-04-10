@@ -1,0 +1,71 @@
+<div class="container">
+	<h1>Récapitulatif de la commande</h1>
+	<div class="flex">	
+		<div id="billing-details">
+			<h3>Coordonnées de facturation</h3>
+			<p><?= htmlspecialchars($_SESSION['order']['billingDetails']['civility']) ?> <?= htmlspecialchars($_SESSION['order']['billingDetails']['firstName']) ?> <?= htmlspecialchars($_SESSION['order']['billingDetails']['lastName']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['billingDetails']['address']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['billingDetails']['zipCode']) ?> <?= htmlspecialchars($_SESSION['order']['billingDetails']['city']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['billingDetails']['country']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['billingDetails']['phoneNumber']) ?></p>
+		</div>
+
+		<div id="delivery-details">
+			<h3>Coordonnées de livraison</h3>
+			<p><?= htmlspecialchars($_SESSION['order']['deliveryDetails']['civility']) ?> <?= htmlspecialchars($_SESSION['order']['deliveryDetails']['firstName']) ?> <?= htmlspecialchars($_SESSION['order']['deliveryDetails']['lastName']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['deliveryDetails']['address']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['deliveryDetails']['zipCode']) ?> <?= htmlspecialchars($_SESSION['order']['deliveryDetails']['city']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['deliveryDetails']['country']) ?></p>
+			<p><?= htmlspecialchars($_SESSION['order']['deliveryDetails']['phoneNumber']) ?></p>
+		</div>
+	</div>
+	<h3>Panier</h3>
+		<table id="shoppingCart">
+		<thead>
+			<tr>
+				<th>Désignation</th>
+				<th>Prix unitaire TTC</th>
+				<th>Quantité</th>
+				<th>Sous-total</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($shoppingCart['products'] as $product): ?>
+			<tr>
+				<td class="product-cell">
+					<a href="products/showOne?id=<?= htmlspecialchars($product['productId']) ?>">
+						<?= htmlspecialchars($product['productName']) ?>
+					</a>
+				</td>
+				<td>
+					<?php
+				$priceTTC = htmlspecialchars($product['priceTTC']);
+				echo number_format($priceTTC, 2, ',','&nbsp;').'&nbsp;€ '; ?><span class="mobile">l'unité</span>
+				</td>
+				<td><span class="mobile">Quantité :</span>
+					<?= htmlspecialchars($product['quantity']) ?>
+				</td>
+				<td class="subtotal last-cell"><span class="mobile">Sous-total :</span>
+					<?php 
+					$subTotal = htmlspecialchars($product['subTotal']);
+					echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';
+					?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan='3'>Total</th>
+				<th><?= number_format($shoppingCart['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></th>
+			</tr>
+			<tr>
+				<td class="mobile total" colspan='3'>Total</td>
+				<td class="mobile total"><?= number_format($shoppingCart['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></td>
+			</tr>
+		</tfoot>
+		</table>
+	<div id="liens">
+		<a href="orders/saveOne" class="button">Valider la commande</a>
+	</div>
+</div>

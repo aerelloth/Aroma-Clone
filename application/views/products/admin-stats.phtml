@@ -1,0 +1,55 @@
+<div class="container">
+	<h2>Statistiques produits</h2>
+	<div class="overflow">
+		<table id='admin' class='admin-products-stats'>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Catégorie</th>
+					<th>Prix HT</th>
+					<th>TVA</th>
+					<th>Prix TTC</th>
+					<th>Qté vendus</th>
+					<th>Nbre achats</th>
+					<th>Total ventes HT</th>
+					<th>Total ventes TTC</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($products as $product) : ?>
+				<tr>
+					<td><a href="products/adminShowOne?id=<?= $product['productId'] ?>"><button class="green-button"><?= htmlspecialchars($product['productId']); ?></button></a></td>
+					<td><?= htmlspecialchars($product['productName']); ?></td>
+					<td><?= htmlspecialchars($product['categoryName']); ?></td>
+					<td><?php
+						$price = htmlspecialchars($product['priceHT']);
+						$price = number_format($price, 2, ',','&nbsp;');
+						echo $price.' €'; ?></td>
+					<td><?php
+						$TVA = htmlspecialchars($product['VATRate']);
+						$TVA = number_format($TVA, 2, ',','&nbsp;');
+						echo $TVA; ?></td>
+					<td><?php
+						$price = htmlspecialchars($product['priceTTC']);
+						$price = number_format($price, 2, ',','&nbsp;');
+						echo $price.' €'; ?></td>
+					<td><?= htmlspecialchars($product['quantityOrdered']); ?></td>
+					<td><?= htmlspecialchars($product['ordersNumber']) ?></td>
+					<td><?php 
+						$HTTotal = number_format($product['total']['HTTotal'], 2, ',','&nbsp;');
+						echo $HTTotal.' €'; ?></td>
+					<td><?php 
+						$TTCTotal = number_format($product['total']['TTCTotal'], 2, ',','&nbsp;');
+						echo $TTCTotal.' €'; ?></td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+		</table>
+	</div>
+	<a href="products/manageForm"><button class="green-button">Gestion des produits</button></a>
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

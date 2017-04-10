@@ -1,0 +1,29 @@
+<div class="container">
+	<div id="product">
+		<h3><?= htmlspecialchars($product['productName']) ?></h3>
+		<img src="public/resources/images/products/<?= htmlspecialchars($product['imagePath']) ?>" alt="<?= htmlspecialchars($product['productName']) ?>">
+		<p><?= htmlspecialchars($product['description']) ?></p>
+		<span class="bold"><?php
+		$price = htmlspecialchars($product['priceTTC']);
+		$price = number_format($price, 2, ',','&nbsp;');
+		echo $price.' €'; ?></span>
+
+		<h3>Statistiques :</h3>
+		<p>Nombre d'exemplaires vendus : <?php 
+			$quantityOrdered = ($product['quantityOrdered']) ? $product['quantityOrdered'] : 0 ;		
+			echo htmlspecialchars($quantityOrdered);		 ?></p>
+		<p>Nombre de commandes : <?= htmlspecialchars($product['ordersNumber']) ?></p>
+		<p>Total des ventes HT : <?php 
+			$HTTotal = ($total['HTTotal']) ? htmlspecialchars($total['HTTotal']) : 0 ;
+			$HTTotal = number_format($HTTotal, 2, ',','&nbsp;');
+			echo $HTTotal.' €'; ?></p>
+		<p>Total des ventes TTC : <?php 
+			$TTCTotal = ($total['TTCTotal']) ? htmlspecialchars($total['TTCTotal']) : 0 ;
+			$TTCTotal = number_format($TTCTotal, 2, ',','&nbsp;');
+			echo $TTCTotal.' €'; ?></p>
+		<div id="liens">
+			<a href="customers/account">Espace admin</a>
+			<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+		</div>
+	</div>
+</div>

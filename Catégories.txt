@@ -1,0 +1,14 @@
+1
+Huiles essentielles -> plein
+
+2
+Huiles végétales -> 1
+
+3
+Ingrédients cosmétiques -> 2
+
+4
+Cosmétiques -> 0
+
+5
+Contenants -> 0

@@ -1,0 +1,66 @@
+<div class="container">
+	<h2>Mon panier : </h2>
+	<?php if($productsNumber > 0): ?>
+	<form action="shoppingCart/update" method="post">
+	<table id="shoppingCart">
+		<thead>
+			<tr>
+				<th>Désignation</th>
+				<th>Prix unitaire TTC</th>
+				<th>Quantité</th>
+				<th>Sous-total</th>
+				<th>Supprimer</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($shoppingCart['products'] as $product): ?>
+			<tr>
+				<td class="product-cell">
+					<a href="products/showOne?id=<?= htmlspecialchars($product['productId']) ?>">
+						<?= htmlspecialchars($product['productName']) ?>
+					</a>
+				</td>
+				<td>
+					<?php
+				$priceTTC = htmlspecialchars($product['priceTTC']);
+				echo number_format($priceTTC, 2, ',','&nbsp;').'&nbsp;€ '; ?><span class="mobile">l'unité</span>
+				</td>
+				<td><span class="mobile">Quantité :</span>
+					<input type='number' min="0" value='<?= htmlspecialchars($product['quantity']) ?>' name='shoppingCart[products][<?= $product['productId'] ?>]'></input>
+				</td>
+				<td class="subtotal"><span class="mobile">Sous-total :</span>
+					<?php 
+					$subTotal = htmlspecialchars($product['subTotal']);
+					echo number_format($subTotal, 2, ',','&nbsp;').'&nbsp;€';
+					?>
+				</td>
+				<td class="last-cell"><span class="mobile">Supprimer </span>
+					<a href="shoppingCart/removeProduct?id=<?= $product['productId'] ?>"><button type='button' class='remove'>X</button></a>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan='3'>Total</th>
+				<th><?= number_format($shoppingCart['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></th>
+				<th></th>
+			</tr>
+			<tr>
+				<td class="mobile total" colspan='3'>Total</td>
+				<td class="mobile total"><?= number_format($shoppingCart['totalAmount'], 2, ',','&nbsp;').'&nbsp;€'; ?></td>
+			</tr>
+		</tfoot>
+		</table>
+		<div id='boutons'>
+			<button type="submit">Actualiser</button>
+			<a href="orders/billingForm"><button type='button'>Finaliser ma commande</button></a>
+		</div>
+		</form>
+	<?php endif; ?>
+	<?php if($productsNumber == 0): ?>
+		<p class="singleline">Votre panier est vide !</p>
+		<a href="<?= CLIENT_ROOT ?>" class="underline">Retourner à l'accueil</a>
+	<?php endif; ?>
+
+</div>

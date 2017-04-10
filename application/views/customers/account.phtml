@@ -1,0 +1,42 @@
+<div class="container" id="login">
+	<?php if(empty($customer)) : ?>
+	<h2>Accéder à mon compte : </h2>
+	<form action="customers/login" method="post">
+		<input type="email" name="email" id="email" placeholder="Email" value='<?= (isset($enteredData['email'])? htmlspecialchars($enteredData['email']):null)?>' required >
+		<input type="password" name="password" id="password" placeholder="Mot de passe" required >
+		<button type="submit">Me connecter</button>
+	<h2>Pas encore de compte ? </h2>
+		<a href="customers/createAccount"><button type="button">Créer un compte</button></a>
+	</form>
+
+	<?php elseif($customer['email'] == ADMIN_EMAIL) : ?>
+	<h2>Bienvenue dans l'espace d'administration ! </h2>
+	<a href="products/manageForm"><button>Gestion des produits</button></a>
+	<a href="categories/manageForm"><button>Gestion des catégories</button></a>
+	<a href="customers/manageForm"><button>Gestion des clients</button></a>
+	<a href="orders/manageForm"><button>Gestion des commandes</button></a>
+
+	<?php else : ?>
+	<h2>Mon compte</h2>
+	<div id="customer-info">
+		<p>Mon identifiant : <?= htmlspecialchars($customer['email']) ?></p>
+		<p><?= htmlspecialchars($customer['civility']) ?> <?= htmlspecialchars($customer['firstName']) ?> <?= htmlspecialchars($customer['lastName']) ?></p>
+
+		<p><?= htmlspecialchars($customer['address']) ?></p>
+		<p><?= htmlspecialchars($customer['zipCode']) ?> <?= htmlspecialchars($customer['city']) ?></p>
+		<p><?= htmlspecialchars($customer['country']) ?></p>
+		<p><?php 
+		if ($customer['phoneNumber'] != NULL)
+		{
+			echo htmlspecialchars($customer['phoneNumber']);
+		} ?></p>
+	</div>
+	<a href="customers/updateForm"><button>Modifier mes coordonnées</button></a>
+	<a href="customers/passwordUpdateForm"><button>Modifier mon mot de passe</button></a>
+	<a href="orders/showPageByCustomerId"><button>Mes dernières commandes</button></a>
+	<a href="customers/logout"><button>Me déconnecter</button></a>
+	<a href="customers/unsuscribe"><button>Supprimer mon compte</button></a>
+	<?php endif; ?>
+
+
+</div>

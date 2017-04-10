@@ -1,0 +1,4 @@
+DirectoryIndex public/frontController.php
+RewriteEngine on
+RewriteRule ^([a-zA-Z0-9]+)$ ?action=$1 [QSA,L]
+RewriteRule ^([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)$ ?controller=$1&action=$2 [QSA,L]

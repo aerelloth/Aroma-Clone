@@ -1,0 +1,46 @@
+<div class="container">
+	<h2>Gestion des catégories</h2>
+	<div class="overflow">
+		<table id='admin' class='admin-categories'>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Nombre de produits</th>
+					<th>Modifier</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($categories as $category) : ?>
+				<tr>
+					<td><?= htmlspecialchars($category['categoryId']); ?></td>
+					<td contenteditable><?= htmlspecialchars($category['categoryName']); ?></td>
+					<td><?= htmlspecialchars($category['productsNumber']); ?></td>
+					<td><button data-action="update" data-id="<?= $category['categoryId'] ?>" data-csrftoken="<?= $CSRFToken?>" class="green-button"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+					<td><a href="categories/removeOne?id=<?= $category['categoryId'] ?>&CSRFToken=<?= $CSRFToken?>"><button class="green-button">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button></a>
+					</td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan='5'>
+						<form action="categories/addOne" method="post">
+							Ajouter une nouvelle catégorie :
+							<input type="text" name="name" placeholder="nom"></input>
+							<input type="hidden" name="CSRFToken" value ="<?= $CSRFToken?>"></input>
+							<button type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+						</form>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div id="liens">
+		<a href="customers/account">Espace admin</a>
+		<a href="products/showSome">Retourner&nbsp;à&nbsp;l'accueil</a>
+	</div>
+</div>

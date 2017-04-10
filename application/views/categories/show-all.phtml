@@ -1,0 +1,18 @@
+<div class="container">
+	<h2>Découvrez nos différentes gammes : </h2>
+<ul id="categories">
+	<?php foreach($categories as $category): ?>
+		<a href="products/showByCategory?id=<?= htmlspecialchars($category['categoryId']) ?>">
+			<li>
+				<h3><?= htmlspecialchars($category['categoryName']) ?></h3>
+				<?php if($category['productsNumber'] >= 2): ?>
+				<p><?= htmlspecialchars($category['productsNumber']) ?> produits</p>
+				<?php endif; ?>
+				<?php if($category['productsNumber'] < 2): ?>
+				<p><?= htmlspecialchars($category['productsNumber']) ?> produit</p>
+				<?php endif; ?>
+			</li>
+		</a>
+	<?php endforeach; ?>
+</ul>
+</div>
